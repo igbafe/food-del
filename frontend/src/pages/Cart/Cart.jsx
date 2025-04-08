@@ -1,10 +1,28 @@
-import React from 'react'
+import React, { useContext } from "react";
 import "./Cart.css";
 
 const Cart = () => {
-  return (
-    <div>Cart</div>
-  )
-}
+  const { cartItems, food_list, removeFromCart } = useContext();
 
-export default Cart
+  return (
+    <div className="cart">
+      <div className="cart-items">
+        <div className="cart-items-title">
+          <p>Items</p>
+          <p>Title</p>
+          <p>Price</p>
+          <p>Quantity</p>
+          <p>Total</p>
+          <p>Remove</p>
+        </div>
+        <br />
+        <hr />
+        {food_list.map((item,index) => {
+          
+        })}
+      </div>
+    </div>
+  );
+};
+
+export default Cart;
