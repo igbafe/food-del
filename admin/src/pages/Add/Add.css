@@ -9,3 +9,7 @@
 .add form {
     gap: 20px;
 }
+
+.add-img-upload img{
+    cursor: pointer;
+}
