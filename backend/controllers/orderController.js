@@ -86,11 +86,36 @@ const verifyOrder = async (req, res) => {
 const userOrder = async (req, res) => {
   try {
     const orders = await orderModel.find({ userId: req.body.userId });
-    res.json({sucess:true, data:orders})
+    res.json({ sucess: true, data: orders });
   } catch (error) {
-    console.log(error)
-    res.json({sucess:false,message:"error getting order"})
+    console.log(error);
+    res.json({ sucess: false, message: "error getting order" });
   }
 };
 
-export { placeOrder, verifyOrder, userOrder };
+// list of orders for admin panel
+const listOrders = async (req, res) => {
+  try {
+    const orders = await orderModel.find({});
+    res.json({ success: true, data: orders });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Error fetching orders" });
+  }
+};
+
+// api for updating order status
+const updateStatus = async (req, res) => {
+  try {
+    await orderModel.findByIdAndUpdate(req.body.orderId, {
+      status: req.body.status,
+    });
+    res.json({ success: true, message: "Order status updated successfully" });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ success: false, message: "Error updating order status" });
+  }
+};
+export { placeOrder, verifyOrder, userOrder, listOrders, updateStatus };
