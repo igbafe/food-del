@@ -15,7 +15,10 @@ const port = process.env.PORT || 4000;
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://food-del-frontend-2dwv.onrender.com", // your frontend URL
+    origin: [
+      "https://food-del-frontend-2dwv.onrender.com", // your frontend URL
+      "https://food-del-admin-cgn7.onrender.com" // your admin URL
+    ],
   })
 );
 
