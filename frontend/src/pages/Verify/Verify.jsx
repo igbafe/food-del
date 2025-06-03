@@ -3,6 +3,7 @@ import "./Verify.css";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { StoreContext } from "../../context/StoreContext";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Verify = () => {
   const [searchParams] = useSearchParams();
@@ -35,15 +36,17 @@ const Verify = () => {
           orderId,
         },
         {
-          headers: { 
+          headers: {
             token,
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
           },
         }
       );
       if (response.data.success) {
+        toast.success("Order placed successfully!");
         navigate("/myorders");
       } else {
+        toast.error("Order verification failed. Please try again.");
         navigate("/");
       }
     } catch (error) {

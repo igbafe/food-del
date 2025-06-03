@@ -66,10 +66,10 @@ const verifyOrder = async (req, res) => {
   try {
     if (success === "true") {
       await orderModel.findByIdAndUpdate(orderId, {
-        status: "paid",
+        status: "Food Processing",
         payment: true,
       });
-      res.json({ success: true, message: "Order paid successfully" });
+      res.json({ success: true, message: "Order successful" });
     } else {
       await orderModel.findByIdAndUpdate(orderId, {
         status: "failed",
