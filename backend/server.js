@@ -9,11 +9,18 @@ import orderRouter from "./routes/orderRoute.js";
 
 // app config
 const app = express();
-const port = 4000;
+const port = process.env.PORT || 4000;
 
 // middleware
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "https://food-del-frontend-2dwv.onrender.com", // your frontend URL
+      "https://food-del-admin-cgn7.onrender.com" // your admin URL
+    ],
+  })
+);
 
 // db conection
 connectDB();
@@ -23,7 +30,7 @@ app.use("/api/food", foodRouter);
 app.use("/images", express.static("uploads"));
 app.use("/api/user", userRouter);
 app.use("/api/cart", cartRouter);
-app.use("api/order", orderRouter);
+app.use("/api/order", orderRouter);
 
 app.get("/", (req, res) => {
   res.send("API working");
