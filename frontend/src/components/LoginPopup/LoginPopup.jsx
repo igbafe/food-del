@@ -28,18 +28,33 @@ const LoginPopup = ({ setShowLogin }) => {
     } else {
       newUrl += "/api/user/register";
     }
-    const response = await axios.post(newUrl, data);
-    if (response.data.success) {
-      setToken(response.data.token);
-      localStorage.setItem("token", response.data.token);
-      setShowLogin(false);
-      toast.success(response.data.message)
-    }
-    else {
-      toast.error(response.data.message)
+    try {
+      const response = await axios.post(newUrl, data);
+      console.log("Response from frontend:", response.data);
+      if (response.data.success) {
+        setToken(response.data.token);
+        localStorage.setItem("token", response.data.token);
+        setShowLogin(false);
+        toast.success(response.data.message);
+      } else {
+        toast.error(response.data.message || "Something went wrong.");
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data?.message || error.message;
+        toast.error(`Error: ${message}`);
+      } else {
+        toast.error("Unexpected error occurred.", {
+          style: {
+            minWidth: "650px", // or wider if needed
+            padding: "30px",
+            whiteSpace: "normal", // allow wrapping instead of one-line overflow
+            wordBreak: "break-word",
+          },
+        });
+      }
     }
   };
-
   return (
     <div className="login-popup">
       <form className="login-popup-container" onSubmit={onLogin}>

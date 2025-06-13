@@ -65,7 +65,7 @@ const registerUser = async (req, res) => {
     });
     const user = await newUser.save();
     const token = createToken(user._id);
-    res.status(201).json({success:true,token})
+    res.status(201).json({success:true, token, message: "User registered successfully"});
   } catch (error) {
     console.log(error)
     res.status(500).json({success:false,message:error.message})
