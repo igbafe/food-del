@@ -17,7 +17,8 @@ app.use(
   cors({
     origin: [
       "https://food-del-frontend-2dwv.onrender.com", // your frontend URL
-      "https://food-del-admin-cgn7.onrender.com" // your admin URL
+      "https://food-del-admin-cgn7.onrender.com", // your admin URL
+      "http://localhost:5174/", // your local frontend URL
     ],
   })
 );
