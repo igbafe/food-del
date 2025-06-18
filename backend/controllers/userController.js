@@ -9,23 +9,27 @@ const loginUser = async (req, res) => {
   try {
     const user = await userModel.findOne({ email });
     if (!user) {
-      return res.status(400).json({ success: false, message: "User not found" });
+      return res
+        .status(400)
+        .json({ success: false, message: "User not found" });
     }
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return res.status(400).json({ success: false, message: "Invalid password" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid password" });
     }
     const token = createToken(user._id);
-    res.status(200).json({success:true,token})
-} catch (error) {
-    console.log(error)
-    res.status(500).json({success:false,message:error.message})
-} 
+    res.status(200).json({ success: true, token });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
 };
 
 const createToken = (id) => {
-    return jwt.sign({id},process.env.JWT_SECRET)
-}
+  return jwt.sign({ id }, process.env.JWT_SECRET);
+};
 
 // register User
 const registerUser = async (req, res) => {
@@ -45,13 +49,11 @@ const registerUser = async (req, res) => {
         .json({ success: false, message: "Please enter a valid email" });
     }
     if (!validator.isStrongPassword(password)) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message:
-            "Password must be at least 8 characters long and contain a mix of letters, numbers, and symbols",
-        });
+      return res.status(400).json({
+        success: false,
+        message:
+          "Password must be at least 8 characters long and contain a mix of letters, numbers, and symbols",
+      });
     }
     // Hash the password
     const salt = await bcrypt.genSalt(10);
@@ -65,10 +67,12 @@ const registerUser = async (req, res) => {
     });
     const user = await newUser.save();
     const token = createToken(user._id);
-    res.status(201).json({success:true, token, message: "User registered successfully"});
+    res
+      .status(201)
+      .json({ success: true, token, message: "User registered successfully" });
   } catch (error) {
-    console.log(error)
-    res.status(500).json({success:false,message:error.message})
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
