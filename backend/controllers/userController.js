@@ -1,7 +1,7 @@
 import userModel from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import validator from "validator";
+import userSchemaZod from "../validations/userValidations.js";
 
 // login User
 const loginUser = async (req, res) => {
@@ -33,7 +33,7 @@ const createToken = (id) => {
 
 // register User
 const registerUser = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password } = userSchemaZod.parse(req.body);
   try {
     const exists = await userModel.findOne({ email });
     if (exists) {
@@ -42,19 +42,6 @@ const registerUser = async (req, res) => {
         .json({ success: false, message: "User already exists" });
     }
 
-    // Validate email and password
-    if (!validator.isEmail(email)) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Please enter a valid email" });
-    }
-    if (!validator.isStrongPassword(password)) {
-      return res.status(400).json({
-        success: false,
-        message:
-          "Password must be at least 8 characters long and contain a mix of letters, numbers, and symbols",
-      });
-    }
     // Hash the password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -71,8 +58,13 @@ const registerUser = async (req, res) => {
       .status(201)
       .json({ success: true, token, message: "User registered successfully" });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: error.message });
+    if (error.name === "ZodError") {
+      return res
+        .status(400)
+        .json({ success: false, errors: error.errors.map((e) => e.message) });
+    }
+
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 

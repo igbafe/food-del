@@ -3,7 +3,7 @@ import "./LoginPopup.css";
 import { assets } from "../../assets/assets";
 import { StoreContext } from "../../context/StoreContext";
 import axios from "axios";
-import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 const LoginPopup = ({ setShowLogin }) => {
   const [currState, setCurrState] = useState("Sign Up");
@@ -35,24 +35,32 @@ const LoginPopup = ({ setShowLogin }) => {
         setToken(response.data.token);
         localStorage.setItem("token", response.data.token);
         setShowLogin(false);
-        toast.success(response?.data?.message);
+        Swal.fire({
+          icon: "success",
+          title: `${
+            currState === "Login" ? "Login" : "Registration"
+          } Successful`,
+          text: response.data.message || "Welcome!",
+          timer: 2000,
+          showConfirmButton: false,
+        });
       } else {
-        toast.error(response.data.message || "Something went wrong.");
-      }
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const message = error.response?.data?.message || error.message;
-        toast.error(`Error: ${message}`);
-      } else {
-        toast.error("Unexpected error occurred.", {
-          style: {
-            minWidth: "650px", // or wider if needed
-            padding: "30px",
-            whiteSpace: "normal", // allow wrapping instead of one-line overflow
-            wordBreak: "break-word",
-          },
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: response.data.message || "Something went wrong.",
         });
       }
+    } catch (error) {
+      const message = axios.isAxiosError(error)
+        ? error.response?.data?.message || error.message
+        : "Unexpected error occurred";
+
+      Swal.fire({
+        icon: "error",
+        title: "Authentication Failed",
+        text: message,
+      });
     }
   };
   return (
