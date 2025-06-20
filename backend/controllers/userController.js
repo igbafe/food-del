@@ -34,8 +34,8 @@ const createToken = (id) => {
 
 // register User
 const registerUser = async (req, res) => {
-  const { name, email, password } = userSchemaZod.parse(req.body);
   try {
+    const { name, email, password } = userSchemaZod.parse(req.body);
     const exists = await userModel.findOne({ email });
     if (exists) {
       return res
