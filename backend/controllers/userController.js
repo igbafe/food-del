@@ -2,7 +2,7 @@ import userModel from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import userSchemaZod from "../validations/userValidations.js";
-import { ZodError } from "zod";
+
 
 // login User
 const loginUser = async (req, res) => {
@@ -59,7 +59,7 @@ const registerUser = async (req, res) => {
       .status(201)
       .json({ success: true, token, message: "User registered successfully" });
   } catch (error) {
-    if (error instanceof ZodError) {
+    if (error ) {
       return res
         .status(400)
         .json({ success: false, errors: error.errors.map((e) => e.message) });
