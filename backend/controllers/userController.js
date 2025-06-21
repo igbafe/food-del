@@ -34,8 +34,15 @@ const createToken = (id) => {
 
 // register User
 const registerUser = async (req, res) => {
+  const result = userSchemaZod.safeParse(req.body);
+  if (!result.success) {
+    return res.status(400).json({
+      success: false,
+      errors: result.error.errors.map((e) => e.message),
+    });
+  }
+  const { name, email, password } = result.data;
   try {
-    const { name, email, password } = userSchemaZod.parse(req.body);
     const exists = await userModel.findOne({ email });
     if (exists) {
       return res
@@ -59,7 +66,7 @@ const registerUser = async (req, res) => {
       .status(201)
       .json({ success: true, token, message: "User registered successfully" });
   } catch (error) {
-    if (error ) {
+    if (error) {
       return res
         .status(400)
         .json({ success: false, errors: error.errors.map((e) => e.message) });

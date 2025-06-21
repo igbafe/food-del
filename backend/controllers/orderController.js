@@ -107,10 +107,17 @@ const listOrders = async (req, res) => {
 // api for updating order status
 const updateStatus = async (req, res) => {
   try {
-    await orderModel.findByIdAndUpdate(req.body.orderId, {
-      status: req.body.status,
-    });
-    res.json({ success: true, message: "Order status updated successfully" });
+    if (req.body.status === "delivered") {
+      // Delete the order if status is delivered
+      await orderModel.findByIdAndDelete(req.body.orderId);
+      res.json({ success: true, message: "Order delivered and deleted successfully" });
+    } else {
+      // Otherwise, just update the status
+      await orderModel.findByIdAndUpdate(req.body.orderId, {
+        status: req.body.status,
+      });
+      res.json({ success: true, message: "Order status updated successfully" });
+    }
   } catch (error) {
     console.log(error);
     res
