@@ -1,4 +1,4 @@
-import  { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import "./LoginPopup.css";
 import { assets } from "../../assets/assets";
 import { StoreContext } from "../../context/StoreContext";
@@ -37,9 +37,8 @@ const LoginPopup = ({ setShowLogin }) => {
         setShowLogin(false);
         Swal.fire({
           icon: "success",
-          title: `${
-            currState === "Login" ? "Login" : "Registration"
-          } Successful`,
+          title: `${currState === "Login" ? "Login" : "Registration"
+            } Successful`,
           text: response.data.message || "Welcome!",
           timer: 2000,
           showConfirmButton: false,
@@ -52,17 +51,31 @@ const LoginPopup = ({ setShowLogin }) => {
         });
       }
     } catch (error) {
-      const message = axios.isAxiosError(error)
-        ? error.response?.data?.message || error.message
-        : "Unexpected error occurred";
+      if (
+        axios.isAxiosError(error) &&
+        error.response?.data?.errors &&
+        Array.isArray(error.response.data.errors)
+      ) {
+        const combinedErrors = error.response.data.errors.join("\n");
+        Swal.fire({
+          icon: "error",
+          title: "Validation Error",
+          text: combinedErrors,
+        });
+      } else {
+        const message = axios.isAxiosError(error)
+          ? error.response?.data?.message || error.message
+          : "Unexpected error occurred";
 
-      Swal.fire({
-        icon: "error",
-        title: "Authentication Failed",
-        text: message,
-      });
+        Swal.fire({
+          icon: "error",
+          title: "Authentication Failed",
+          text: message,
+        });
+      }
     }
-  };
+  }
+
   return (
     <div className="login-popup">
       <form className="login-popup-container" onSubmit={onLogin}>
