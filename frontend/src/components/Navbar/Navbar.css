@@ -44,6 +44,10 @@
   border-bottom: 2px solid #49557e;
 }
 
+.navbar-menu a:hover {
+  border-bottom: 2px solid #49557e;
+}
+
 .navbar li {
   cursor: pointer;
 }
@@ -60,6 +64,12 @@
   border-radius: 5px;
   top: -8px;
   right: -8px;
+}
+
+.navbar-right img:hover {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
+  cursor: pointer;
 }
 
 .navbar-profile {

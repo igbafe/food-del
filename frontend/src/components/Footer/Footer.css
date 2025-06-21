@@ -27,6 +27,10 @@
 .footer-content-left li, .footer-content-right li, .footer-content-center li {
     list-style: none;
     margin-bottom: 10px;
+}
+
+ .footer-content-center li:hover {
+    color: tomato;
     cursor: pointer;
 }
 
@@ -37,6 +41,12 @@
 .footer-social-icons img {
     width: 40px;
     margin-right: 15px;
+}
+
+.footer-social-icons img:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+    cursor: pointer;
 }
 
 .footer hr {
