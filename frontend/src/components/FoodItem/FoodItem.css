@@ -58,6 +58,10 @@
     border-radius: 50%;
 }
 
+.food-item-img-container .add:hover {
+    background-color: #f0f0f0;
+    transition: background-color 0.3s ease;
+}
 .food-item-counter {
     position: absolute;
     bottom: 15px;

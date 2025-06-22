@@ -33,6 +33,11 @@
     cursor: pointer;
 }
 
+.login-popup-title img:hover {
+    transform: rotate(90deg);
+    transition: transform 0.3s ease;
+}
+
 .login-popup-inputs{
     display: flex;
     flex-direction: column;
@@ -54,6 +59,11 @@
     background-color: tomato;
     cursor: pointer;
     font-size: 15px ;
+}
+
+.login-popup-container button:hover {
+    background-color: #e74c3c;
+    transition: background-color 0.3s ease;
 }
 
 .login-popup-condition {
